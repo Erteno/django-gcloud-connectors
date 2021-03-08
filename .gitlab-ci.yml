@@ -3,12 +3,22 @@ stages:
   - build
   - publish
 
-python37:
+python37-22:
   image: registry.gitlab.com/potato-oss/google-cloud/django-gcloud-connectors/python37:latest
   stage: test
   before_script:
     - mkdir .reports
-  script: tox -e py37
+  script: tox -e py37-22
+  artifacts:
+    reports:
+      junit: .reports/django-tests.xml
+
+python37-30:
+  image: registry.gitlab.com/potato-oss/google-cloud/django-gcloud-connectors/python37:latest
+  stage: test
+  before_script:
+    - mkdir .reports
+  script: tox -e py37-30
   artifacts:
     reports:
       junit: .reports/django-tests.xml
@@ -30,17 +40,6 @@ python37-djangae:
   artifacts:
     reports:
       junit: .reports/djangae-tests.xml
-
-
-python36:
-  image: registry.gitlab.com/potato-oss/google-cloud/django-gcloud-connectors/python36:latest
-  stage: test
-  before_script:
-    - mkdir .reports
-  script: tox -e py36
-  artifacts:
-    reports:
-      junit: .reports/django-tests.xml
 
 flake8:
   image: registry.gitlab.com/potato-oss/google-cloud/django-gcloud-connectors/python37:latest
