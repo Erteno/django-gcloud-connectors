@@ -34,9 +34,8 @@ from django.forms.models import modelformset_factory
 from django.test import RequestFactory
 from django.test.utils import override_settings
 from django.urls import path
-from django.utils import six
 from django.utils.safestring import SafeText
-from django.utils.six.moves import range
+
 from django.utils.timezone import make_aware
 from google.cloud.datastore import key
 from google.cloud.datastore.entity import Entity
@@ -332,7 +331,7 @@ class BackendTests(TestCase):
 
     def test_gae_query_display(self):
         # Shouldn't raise any exceptions:
-        representation = six.text_type(TestUser.objects.filter(username='test').query)
+        representation = str(TestUser.objects.filter(username='test').query)
         self.assertTrue('test' in representation)
         self.assertTrue('username' in representation)
 
