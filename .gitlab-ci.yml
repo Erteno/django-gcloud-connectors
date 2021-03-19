@@ -33,6 +33,16 @@ python37-31:
     reports:
       junit: .reports/django-tests.xml
 
+python37-32:
+  image: registry.gitlab.com/potato-oss/google-cloud/django-gcloud-connectors/python37:latest
+  stage: test
+  before_script:
+    - mkdir .reports
+  script: tox -e py37-32
+  artifacts:
+    reports:
+      junit: .reports/django-tests.xml
+
 python37-djangae:
   image: registry.gitlab.com/potato-oss/google-cloud/django-gcloud-connectors/python37:latest
   stage: test
