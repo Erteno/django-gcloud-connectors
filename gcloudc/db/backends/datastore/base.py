@@ -280,7 +280,7 @@ class DatabaseOperations(BaseDatabaseOperations):
             value = set(value)
         return value
 
-    def sql_flush(self, style, tables, seqs, allow_cascade=False):
+    def sql_flush(self, style, tables, allow_cascade=False, reset_sequences=False, *args, **kwargs):
         additional_djangaeidx_tables = [
             x
             for x in self.connection.introspection.table_names()
