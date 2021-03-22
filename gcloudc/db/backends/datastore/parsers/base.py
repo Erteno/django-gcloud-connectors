@@ -358,6 +358,7 @@ class BaseParser(object):
     def get_extracted_ordering(self):
         from ..commands import log_once
         from django.db.models.expressions import OrderBy, F
+        from ..expressions import Scatter
 
         query = self.django_query
 
@@ -411,9 +412,11 @@ class BaseParser(object):
                 if descending:
                     col = "-" + col
                 expressions.add(col)
-
             elif isinstance(col, F):
                 col = col.name
+            elif isinstance(col, Scatter):
+                final.append("__scatter__")
+                continue
 
             if isinstance(col, int):
                 # If you do a Dates query, the ordering is set to [1] or [-1]... which is weird
