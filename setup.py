@@ -15,7 +15,7 @@ AUTHOR_EMAIL = "mail@p.ota.to"
 if os.environ.get('CI_COMMIT_TAG'):
     VERSION = os.environ['CI_COMMIT_TAG']
 else:
-    VERSION = '0.3.1a'
+    VERSION = '0.3.1'
 
 setup(
     name=NAME,
@@ -36,7 +36,7 @@ setup(
         'Programming Language :: Python',
     ],
     install_requires=[
-        'Django>=2.0,<3.1',
+        'Django>=2.0,<3.3',
         'pyyaml>=5.3.1',
         'google-cloud-datastore>=1.15.3',
         'sleuth-mock==0.1',
