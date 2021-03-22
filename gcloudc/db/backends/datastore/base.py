@@ -202,7 +202,7 @@ class DatabaseOperations(BaseDatabaseOperations):
     def quote_name(self, name):
         return name
 
-    def date_trunc_sql(self, lookup_type, field_name):
+    def date_trunc_sql(self, lookup_type, field_name, tzname=None):
         return ""
 
     def datetime_trunc_sql(self, lookup_type, field_name, tzname):
