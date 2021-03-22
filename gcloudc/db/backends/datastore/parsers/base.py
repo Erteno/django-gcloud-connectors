@@ -1,12 +1,10 @@
 import logging
 
-from django.core.exceptions import FieldError
+from django.core.exceptions import FieldError, FieldDoesNotExist, EmptyResultSet
 from django.db import NotSupportedError
 from django.db.models.aggregates import Aggregate
 from django.db.models.expressions import Star
-from django.db.models.fields import FieldDoesNotExist
 from django.db.models.query import FlatValuesListIterable, QuerySet
-from django.db.models.sql.datastructures import EmptyResultSet
 from django.db.models.sql.query import Query as DjangoQuery
 
 from ..query import Query, WhereNode
