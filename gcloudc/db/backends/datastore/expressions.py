@@ -1,6 +1,7 @@
 from django.db import NotSupportedError
 from django.db.models.aggregates import Aggregate
 from django.db.models.expressions import (
+    Expression,
     Col,
     F,
 )
@@ -48,3 +49,8 @@ def evaluate_expression(expression, instance, connection):
         )
 
     raise NotImplementedError("Support for expression %r isn't implemented", expression)
+
+
+class Scatter(Expression):
+    def as_sql(self, compiler, connection, **extra_context):
+        return "?", ''

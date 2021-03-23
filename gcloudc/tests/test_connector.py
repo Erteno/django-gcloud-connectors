@@ -45,6 +45,9 @@ from gcloudc.db.backends.datastore import (
     indexing,
     transaction,
 )
+
+from gcloudc.db.backends.datastore.expressions import Scatter
+
 from gcloudc.db.backends.datastore.commands import FlushCommand
 from gcloudc.db.backends.datastore.indexing import (
     IExactIndexer,
@@ -532,8 +535,9 @@ class BackendTests(TestCase):
 
     def test_ordering_by_scatter_property(self):
         try:
-            list(TestFruit.objects.order_by("__scatter__"))
+            list(TestFruit.objects.order_by(Scatter()))
         except:  # noqa
+            raise
             logging.exception("Error sorting on __scatter__")
             self.fail("Unable to sort on __scatter__ property like we should")
 
@@ -1782,6 +1786,9 @@ class SlicingTests(TestCase):
 
 class NamespaceTests(TestCase):
     multi_db = True
+    databases = (
+        "default", "nonamespace", "ns1"
+    )
 
     @skipIf("ns1" not in settings.DATABASES, "This test is designed for the Djangae testapp settings")
     def test_database_specific_namespaces(self):

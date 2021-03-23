@@ -1,12 +1,10 @@
 import logging
 
-from django.core.exceptions import FieldError
+from django.core.exceptions import FieldError, FieldDoesNotExist, EmptyResultSet
 from django.db import NotSupportedError
 from django.db.models.aggregates import Aggregate
 from django.db.models.expressions import Star
-from django.db.models.fields import FieldDoesNotExist
 from django.db.models.query import FlatValuesListIterable, QuerySet
-from django.db.models.sql.datastructures import EmptyResultSet
 from django.db.models.sql.query import Query as DjangoQuery
 
 from ..query import Query, WhereNode
@@ -360,6 +358,7 @@ class BaseParser(object):
     def get_extracted_ordering(self):
         from ..commands import log_once
         from django.db.models.expressions import OrderBy, F
+        from ..expressions import Scatter
 
         query = self.django_query
 
@@ -413,9 +412,11 @@ class BaseParser(object):
                 if descending:
                     col = "-" + col
                 expressions.add(col)
-
             elif isinstance(col, F):
                 col = col.name
+            elif isinstance(col, Scatter):
+                final.append("__scatter__")
+                continue
 
             if isinstance(col, int):
                 # If you do a Dates query, the ordering is set to [1] or [-1]... which is weird

@@ -3,7 +3,7 @@
 from django.db import connection as default_connection
 from django.db import connections
 from django.db.models.query import Q
-from django.db.models.sql.datastructures import EmptyResultSet
+from django.core.exceptions import EmptyResultSet
 
 from gcloudc.db.backends.datastore import transaction
 from gcloudc.db.backends.datastore.dnf import normalize_query

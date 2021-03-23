@@ -4,7 +4,7 @@ from itertools import product
 
 from django.conf import settings
 from django.db import NotSupportedError
-from django.db.models.sql.datastructures import EmptyResultSet
+from django.core.exceptions import EmptyResultSet
 from google.cloud.datastore.key import Key
 
 from .query import WhereNode

@@ -9,7 +9,7 @@ from django.db import (
     connections,
 )
 from django.db.models import AutoField
-from django.db.models.sql.datastructures import EmptyResultSet
+from django.core.exceptions import EmptyResultSet
 
 from . import POLYMODEL_CLASS_ATTRIBUTE
 from .indexing import (
