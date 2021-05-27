@@ -116,7 +116,11 @@ class Transaction(object):
 
     def enter(self):
         self._seen_keys = set()
-        self._enter()
+        try:
+            self._enter()
+        except Exception:
+            self.exit()
+            raise
 
     def exit(self):
         self._exit()
