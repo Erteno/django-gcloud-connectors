@@ -1,9 +1,9 @@
-
 import threading
 
 import sleuth
 from django.db import connection
 from gcloudc.db import transaction
+from gcloudc.db.backends.datastore import reset_context_cache
 
 from . import TestCase
 from .models import (
@@ -228,6 +228,24 @@ class TransactionTests(TestCase):
         # then behave properly in a nested transaction.
         inner_txn()
         outer_txn()
+
+    def test_atomic_context_manager_raises_error(self):
+        """Test that the transaction.atomic context manager
+        handles errors raised when starting a transaction.
+        """
+        with sleuth.detonate(
+                "gcloudc.db.backends.datastore.transaction.NormalTransaction._enter",
+                exception=UserWarning
+            ):
+            with self.assertRaises(UserWarning):
+                with transaction.atomic():
+                    TestFruit.objects.create(name="Apple", color="Red")
+
+        self.assertEqual(TestFruit.objects.all().count(), 0)
+
+        # this should not throw a `RuntimeError`;
+        # the `transaction.atomic()` context manager should handle errors & cleanup the transaction
+        reset_context_cache()
 
 
 class TransactionStateTests(TestCase):
