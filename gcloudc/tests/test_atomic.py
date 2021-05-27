@@ -235,8 +235,7 @@ class TransactionTests(TestCase):
         """
         with sleuth.detonate(
                 "gcloudc.db.backends.datastore.transaction.NormalTransaction._enter",
-                exception=UserWarning
-            ):
+                exception=UserWarning):
             with self.assertRaises(UserWarning):
                 with transaction.atomic():
                     TestFruit.objects.create(name="Apple", color="Red")
