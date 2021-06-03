@@ -18,7 +18,6 @@ import json
 from collections import OrderedDict
 
 from django.db import models
-from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
 
 from gcloudc.db.backends.datastore.indexing import Indexer, register_indexer, IgnoreForIndexing
@@ -32,7 +31,7 @@ def dumps(value):
 
 
 def loads(txt, object_pairs_hook=None):
-    value = json.loads(txt, encoding=settings.DEFAULT_CHARSET, object_pairs_hook=object_pairs_hook)
+    value = json.loads(txt, object_pairs_hook=object_pairs_hook)
     return value
 
 
