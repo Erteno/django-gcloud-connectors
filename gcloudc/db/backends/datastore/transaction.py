@@ -116,11 +116,7 @@ class Transaction(object):
 
     def enter(self):
         self._seen_keys = set()
-        try:
-            self._enter()
-        except Exception:
-            self.exit()
-            raise
+        self._enter()
 
     def exit(self):
         self._exit()
@@ -353,16 +349,21 @@ class AtomicDecorator(context_decorator.ContextDecorator):
         else:
             new_transaction = NormalTransaction(connection)
 
-        _STORAGE.transaction_stack.setdefault(using, []).append(new_transaction)
-        _STORAGE.transaction_stack[using][-1].enter()
+        try:
+            new_transaction.enter()
+        except Exception:
+            new_transaction.exit()
+            raise
+        else:
+            _STORAGE.transaction_stack.setdefault(using, []).append(new_transaction)
 
-        if isinstance(new_transaction, (IndependentTransaction, NormalTransaction)):
-            caching.get_context().stack.push()
+            if isinstance(new_transaction, (IndependentTransaction, NormalTransaction)):
+                caching.get_context().stack.push()
 
-        # We may have created a new transaction, we may not. current_transaction() returns
-        # the actual active transaction (highest NormalTransaction or lowest IndependentTransaction)
-        # or None if we're in a non_atomic, or there are no transactions
-        return current_transaction()
+            # We may have created a new transaction, we may not. current_transaction() returns
+            # the actual active transaction (highest NormalTransaction or lowest IndependentTransaction)
+            # or None if we're in a non_atomic, or there are no transactions
+            return current_transaction()
 
     @classmethod
     def _do_exit(cls, state, decorator_args, exception):
