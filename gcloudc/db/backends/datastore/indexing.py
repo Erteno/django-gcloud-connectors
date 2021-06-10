@@ -130,7 +130,7 @@ def load_special_indexes(connection):
 
     # Now, load the rest of the files and update any entries
     for file_path in files_to_reload:
-        mtime = files_to_reload[project_index_file]
+        mtime = _last_loaded_times[project_index_file]
         new_data = _read_file(file_path)
         _last_loaded_times[file_path] = mtime
 
