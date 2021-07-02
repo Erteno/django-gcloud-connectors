@@ -32,10 +32,10 @@ class TrueOrNullFormField(forms.BooleanField):
 class ListWidget(forms.TextInput):
     """ A widget for being able to display a ListField and SetField. """
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         if isinstance(value, (list, tuple, set)):
             value = ", ".join([str(v) for v in value])
-        return super(ListWidget, self).render(name, value, attrs)
+        return super().render(name, value, attrs, renderer)
 
     def value_from_datadict(self, data, files, name):
         """ Given a dictionary of data and this widget's name, returns the value
@@ -49,6 +49,7 @@ class ListWidget(forms.TextInput):
         if isinstance(value, str):
             value = value.split(",")
         return [v.strip() for v in value if v.strip()]
+
 
 
 class ListFormField(forms.Field):
